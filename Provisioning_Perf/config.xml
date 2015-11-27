@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/sh
+eval &quot;$(docker-machine env default)&quot;
+docker rm -f petclinic || true
+docker rmi nabilblk/petclinic || true
+rm -rf petclinic-docker || true
+git clone https://github.com/nabilblk/petclinic-docker.git
+cd petclinic-docker
+docker build --no-cache -t nabilblk/petclinic .
+docker run -d --name petclinic -p 8081:8080 nabilblk/petclinic</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
